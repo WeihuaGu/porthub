@@ -1,0 +1,13 @@
+{
+  "name": "hi",
+  "description": "hi to box",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.17.2",
+    "http-proxy-middleware": "^2.0.1",
+    "pug": "^3.0.2",
+    "request": "^2.88.2",
+    "serve-favicon": "^2.5.0"
+  }
+}
