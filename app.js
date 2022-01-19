@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var request = require('request');
+var requestpost = require('./requestpost');
 var path = require('path')
 app.use(favicon(path.join(__dirname,'favicon.ico')));
 app.set('view engine', 'pug');
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 global.servicetype = [];
+global.serviceport = {};
 const selfserver = ['/','/regist','/registinfo'];
 var services = require('./services');
 var definePath = (req,res,next)=>{
@@ -21,21 +23,11 @@ var definePath = (req,res,next)=>{
 		if(req.method=="GET")
 			res.redirect(newpath);
 		else{
-			var posturl="http://localhost:4000"+newpath;
 			console.log("have a post");
-			console.log(posturl);
-			var r=request({
-				url:posturl,
-				headers : {
-        				"content-type": req.get('content-type'),
-					"cookie": req.cookies
-    				},
-				method:"POST",
-				form:req.body
-			},function(err,res,body){
-			//	console.log(res);
-			});
-			req.pipe(r).pipe(res);
+			var port=global.serviceport[app.get('lastservice')];
+			console.log(global.serviceport);
+			console.log(app.get('lastservice'));
+			req.pipe(requestpost.makepost(port,req)).pipe(res);
 
 		}
 		next();

@@ -14,6 +14,7 @@ router.get('/registinfo',function (req, res) {
   var path=req.query.path;
   var port=req.query.port;
   global.servicetype.push(path);
+  global.serviceport[path]=port;
   router.use(path,proxy.getProxy(path,port));
   res.send("new path:"+path+" with port:"+port+"added");
 });
