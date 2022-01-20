@@ -3,9 +3,9 @@ var req={
 	"path": "/test",
 	"content-type": "application/json"
 };
-req['body']={
-	"name":  "test",
-	"haha": "haha"
+req.body={
+	name:  "test",
+	haha: "haha"
 }
 req.get = function(key){
 	return this[key]
