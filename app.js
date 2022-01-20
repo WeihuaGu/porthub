@@ -16,22 +16,27 @@ global.serviceport = {};
 const selfserver = ['/','/regist','/registinfo'];
 var services = require('./services');
 var definePath = (req,res,next)=>{
-	if(checkPath(req.path))
+	flagpathcheck=checkPath(req.path);
+	if(flagpathcheck&&(req.method=="GET"))
 		next();
-	else {
-		var newpath=app.get('lastservice')+req.path;
-		if(req.method=="GET")
-			res.redirect(newpath);
-		else{
+	if(!flagpathcheck&&(req.method=="GET")){
+		if(app.get('lastservice')==undefined)
+			var newpath=getPathService(app.get('lastpath'))+req.path;
+		else
+			var newpath=app.get('lastservice')+req.path;
+		
+		res.redirect(newpath);
+	}
+
+
+	if(req.method=="POST") {
 			console.log("have a post");
 			var port=global.serviceport[app.get('lastservice')];
 			console.log(global.serviceport);
 			console.log(app.get('lastservice'));
 			req.pipe(requestpost.makepost(port,req)).pipe(res);
-
-		}
-		next();
 	}
+	next();
 }
 var setlastPath = (req,res,next)=>{
 	app.set('lastpath',req.path);
@@ -76,7 +81,7 @@ app.use(definePath,setlastPath);
 app.use(services);
 
 app.get('/', function(req, res){
-  res.send('你好： box欢迎你');
+  res.send('你好： box欢迎你'+'</br>'+JSON.stringify(global.servicetype)+'</br>'+JSON.stringify(global.serviceport));
 });
 
 var server = app.listen(4000, function() {
