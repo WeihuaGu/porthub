@@ -31,17 +31,14 @@ var getparam=(port,req)=>{
 
 var makepost=(port,req)=>{
 	var option = getparam(port,req);
-	try{
-	var r=request(option,function(err,res,body){
-		if(err==null)
-			console.log(body);
+	var r=request(option,function(err,requestedres,body){
+		if(err==null){
+
+		}
 		else 
-			console.log(err);
+		  console.log(err);
                         });
 	return r;
-	}catch(e){
-	}finally{
-	}
 }
 
 

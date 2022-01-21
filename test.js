@@ -1,6 +1,6 @@
 var requestpost = require('./requestpost');
 var req={
-	"path": "/test",
+	"path": "/postjson",
 	"content-type": "application/json"
 };
 req.body={

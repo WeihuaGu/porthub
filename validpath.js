@@ -1,10 +1,14 @@
 var express = require('express');
 var requestpost = require('./requestpost');
+var util = require('./util');
 
 var app = express();
 var definePath = (req,res,next)=>{
         flagpathcheck=checkPath(req.path);
+	console.log("check path");
+	console.log(flagpathcheck);
         if(flagpathcheck&&(req.method=="GET")){
+		console.log("path checked go to next");
                 next();
 		return;
 	}
@@ -15,22 +19,6 @@ var definePath = (req,res,next)=>{
                         var newpath=app.get('lastservice')+req.path;
 
                 res.redirect(newpath);
-		
-        }
-
-
-        if(req.method=="POST") {
-                        console.log("have a post");
-                        //var port=global.serviceport[app.get('lastservice')];
-                        //console.log(app.get('lastservice'));
-                        //console.log(port);
-		        
-		        try{
-			var r = requestpost.makepost(3000,req);
-                        req.pipe(r,{end: false}).pipe(res);
-			}catch(e) {
-			}finally{
-			}
         }
         next();
 }
@@ -42,14 +30,16 @@ var setlastPath = (req,res,next)=>{
         next();
 }
 var checkPath = (path)=>{
-        //console.log("check internal: "+path);
         for (var item in global.selfserver){
                 if(path==global.selfserver[item])
                         return true;
         }
+	const servicetype = util.getkeylist(global.serviceport);
+	console.log("目前serviceport"+JSON.stringify(global.serviceport));
+	console.log("now servicetye"+servicetype);
 
-        for (var type in global.servicetype) { 
-                if(path.includes(global.servicetype[type])){
+        for (var type in servicetype) { 
+                if(path.includes(servicetype[type])){
                         return true;
                 }
         }
@@ -58,13 +48,23 @@ var checkPath = (path)=>{
 var getPathService = (lastpath)=>{
         if(lastpath==null)
                 return "";
-        for (var type in global.servicetype) {
-                if(lastpath.includes(global.servicetype[type]))
+	const servicetype = util.getkeylist(global.serviceport);
+        for (var type in servicetype) {
+                if(lastpath.includes(servicetype[type]))
                         return servicetype[type];
         }
         return "";
 }
 
 app.use(definePath,setlastPath);
+app.post('*',(req,res)=>{
+	console.log("have a post");
+        var port=global.serviceport[app.get('lastservice')];
+        console.log(app.get('lastservice'));
+        console.log(port);
+
+	var r=requestpost.makepost(3000,req);
+	r.pipe(res);
+});
 module.exports = app;
 
