@@ -1,22 +1,23 @@
 var express = require('express');
+var multipart = require('connect-multiparty');
+var multipartmidd = multipart();
 var requestpost = require('./requestpost');
 var util = require('./util');
 
+var rootfilelist = ['.html','.css','.jpg','.js'];
 var app = express();
 var definePath = (req,res,next)=>{
-        flagpathcheck=checkPath(req.path);
-	console.log("check path");
-	console.log(flagpathcheck);
+        flagpathcheck=checkPath(req);
         if(flagpathcheck&&(req.method=="GET")){
-		console.log("path checked go to next");
                 next();
 		return;
 	}
         if(!flagpathcheck&&(req.method=="GET")){
+		var baseurl = req.originalUrl;
                 if(app.get('lastservice')==undefined)
-                        var newpath=getPathService(app.get('lastpath'))+req.path;
+                        var newpath=getPathService(app.get('lastpath'))+baseurl;
                 else
-                        var newpath=app.get('lastservice')+req.path;
+                        var newpath=app.get('lastservice')+baseurl;
 
                 res.redirect(newpath);
         }
@@ -29,22 +30,33 @@ var setlastPath = (req,res,next)=>{
                 app.set("lastservice",service);
         next();
 }
-var checkPath = (path)=>{
+var checkPath = (req)=>{
+	var baseurl = req.originalUrl;
+	if(req.path!="/"&&isPathHavefile(baseurl)&&(req.path==baseurl)&&(util.countalptimes(baseurl,'/')==1)){
+		console.log("have root file: "+baseurl);
+		return false;
+	}
         for (var item in global.selfserver){
-                if(path==global.selfserver[item])
+                if(req.path==global.selfserver[item])
                         return true;
         }
 	const servicetype = util.getkeylist(global.serviceport);
-	console.log("目前serviceport"+JSON.stringify(global.serviceport));
-	console.log("now servicetye"+servicetype);
 
         for (var type in servicetype) { 
-                if(path.includes(servicetype[type])){
+                if(req.path.includes(servicetype[type])){
                         return true;
                 }
         }
         return false;
 }
+var isPathHavefile = (url)=>{
+	for (var item in rootfilelist){
+		if(url.includes(rootfilelist[item]))
+			return true;
+	}
+	return false;
+}
+		
 var getPathService = (lastpath)=>{
         if(lastpath==null)
                 return "";
@@ -57,13 +69,13 @@ var getPathService = (lastpath)=>{
 }
 
 app.use(definePath,setlastPath);
-app.post('*',(req,res)=>{
+app.post('*',(req,res,next)=>{
 	console.log("have a post");
         var port=global.serviceport[app.get('lastservice')];
         console.log(app.get('lastservice'));
         console.log(port);
 
-	var r=requestpost.makepost(3000,req);
+	var r=requestpost.makepost(port,req);
 	r.pipe(res);
 });
 module.exports = app;

@@ -1,4 +1,8 @@
 var request = require('request');
+var formdata = require('form-data');
+var multiparty = require('multiparty');
+var fs = require('fs');
+
 var getparam=(port,req)=>{
 	var baseoption = {
 			method: "POST",
@@ -26,6 +30,34 @@ var getparam=(port,req)=>{
 		const option=Object.assign(typeoption,baseoption);
 		return option;
 	}
+	if(type.includes('multipart/form-data')){
+		var form = new multiparty.Form({ uploadDir: './tmp'});
+		form.parse(req,(err,fields,files)=>{
+		//var fields = req.body;
+                //var files = req.files;
+                //var form = new formdata();
+                if(fields){
+                        for(let i in fields){
+                                if(fields.hasOwnProperty(i)){
+                                       // form.append(i,fields[i]);
+                                }
+                        }
+                }
+                if(files){
+                        var item = files.file;
+			console.log("form-data");
+			console.dir(files);
+                        //form.append(item['fieldName'],fs.createReadStream(item['path']));
+                }
+
+                var typeoption = {
+			formData: form
+                };
+                const option=Object.assign(typeoption,baseoption);
+                return option;
+		})
+        }
+
 
 }
 

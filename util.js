@@ -16,8 +16,20 @@ var getkeylist = (dic)=>{
 	}
 	return list;
 }
+var countalptimes = (str ,alp)=>{
+	var count = 0;
+	for (var i = 0; i < str.length; i++) {
+		 if(alp==str[i])
+			count++
+	}
+	return count;
 
+
+}
+	
 module.exports = {
 	cors:cors,
-	getkeylist:getkeylist
+	getkeylist:getkeylist,
+	countalptimes:countalptimes
+
 }
