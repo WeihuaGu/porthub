@@ -4,11 +4,20 @@ const formidable = require('formidable');
 var fs = require('fs');
 
 var getparam=(port,req,paramcallback)=>{
+	var host = req.get('host').split(':')[0];
 	var baseoption = {
 			method: "POST",
 			url: "http://localhost:"+port+req.path,
 			headers: {
-
+				"host": req.get('host'),
+				"user-agent": req.get('user-agent'),
+				"accept": req.get('accept'),
+				"accept-language": req.get('accept-language'),
+				"accept-encoding": req.get('accept-encoding'), 
+				"referer": req.get('referer'),
+				"origin": req.get('origin'),
+				"connection": req.get('connection'),
+				"upgrade-insecure-requests": req.get('upgrade-insecure-requests'),
 				"content-type": req.get('content-type'),
 				"cookie": req.cookies
 			}
@@ -42,6 +51,7 @@ var getparam=(port,req,paramcallback)=>{
                         	formData: form
                 	};
                 	const option=Object.assign(typeoption,baseoption);
+			console.log("gen type option"+option);
 			callparamcallback(option);
 		}
 		var formcall = (err, fields, files) => {
