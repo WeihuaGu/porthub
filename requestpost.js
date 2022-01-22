@@ -3,7 +3,7 @@ var formdata = require('form-data');
 const formidable = require('formidable');
 var fs = require('fs');
 
-var getparam=(port,req)=>{
+var getparam=(port,req,paramcallback)=>{
 	var baseoption = {
 			method: "POST",
 			url: "http://localhost:"+port+req.path,
@@ -19,7 +19,8 @@ var getparam=(port,req)=>{
 			form: req.body
 		};
 		const option=Object.assign(typeoption, baseoption);
-		return option;
+		paramcallback(option);
+		return;
 	}
 	
 	if(type.includes('application/json')){
@@ -28,39 +29,45 @@ var getparam=(port,req)=>{
 			json: true
 		};
 		const option=Object.assign(typeoption,baseoption);
-		return option;
+		paramcallback(option);
+                return;
+
 	}
 	if(type.includes('multipart/form-data')){
 		const form = formidable({ multiples: true });
+		var gentypeoption = (form)=>{
+			var typeoption = {
+                        	formData: form
+                	};
+                	const option=Object.assign(typeoption,baseoption);
+			paramcallback(option);
+		}
 		var formcall = (err, fields, files) => {
                   if (err) {
                    	console.log(err);
                   	return;
                   }
-                  console.dir({ fields, files });
+		  gentypeoption({ fields, files });
                  };
   		form.parse(req,formcall);
-
-                var typeoption = {
-			//formData: form
-                };
-                const option=Object.assign(typeoption,baseoption);
-                return option;
         }
 
 
 }
 
-var makepost=(port,req)=>{
-	var option = getparam(port,req);
-	var r=request(option,function(err,requestedres,body){
-		if(err==null){
+var makepost=(port,req,callback)=>{
+	var paramcallback = (option)=>{
+		 var r=request(option,function(err,requestedres,body){
+                	if(err==null){
 
-		}
-		else 
-		  console.log(err);
-                        });
-	return r;
+                	}
+                	else
+                  		console.log(err);
+                 });
+		 callback(r);
+	}
+
+	getparam(port,req,paramcallback);
 }
 
 

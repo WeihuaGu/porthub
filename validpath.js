@@ -33,7 +33,6 @@ var setlastPath = (req,res,next)=>{
 var checkPath = (req)=>{
 	var baseurl = req.originalUrl;
 	if(req.path!="/"&&isPathHavefile(baseurl)&&(req.path==baseurl)&&(util.countalptimes(baseurl,'/')==1)){
-		console.log("have root file: "+baseurl);
 		return false;
 	}
         for (var item in global.selfserver){
@@ -74,9 +73,14 @@ app.post('*',(req,res,next)=>{
         var port=global.serviceport[app.get('lastservice')];
         console.log(app.get('lastservice'));
         console.log(port);
+	var rawres=res;
+	requestpost.makepost(port,req,(requeststream)=>{
+		console.log("call makepost callback");
+		console.log(requeststream);
 
-	var r=requestpost.makepost(port,req);
-	r.pipe(res);
+		requeststream.pipe(rawres);
+
+	});
 });
 module.exports = app;
 
