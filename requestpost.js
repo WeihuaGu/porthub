@@ -32,21 +32,20 @@ var getparam=(port,req)=>{
 	}
 	if(type.includes('multipart/form-data')){
 		const form = formidable({ multiples: true });
-  		form.parse(req, (err, fields, files) => {
-    		  if (err) {
-      		   next(err);
-      		  return;
-   		 }
-    		  console.dir({ fields, files });
- 		 });
-		});
+		var formcall = (err, fields, files) => {
+                  if (err) {
+                   	console.log(err);
+                  	return;
+                  }
+                  console.dir({ fields, files });
+                 };
+  		form.parse(req,formcall);
 
                 var typeoption = {
 			//formData: form
                 };
                 const option=Object.assign(typeoption,baseoption);
                 return option;
-		})
         }
 
 
