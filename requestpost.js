@@ -1,6 +1,6 @@
 var request = require('request');
 var formdata = require('form-data');
-var multiparty = require('multiparty');
+const formidable = require('formidable');
 var fs = require('fs');
 
 var getparam=(port,req)=>{
@@ -31,27 +31,18 @@ var getparam=(port,req)=>{
 		return option;
 	}
 	if(type.includes('multipart/form-data')){
-		var form = new multiparty.Form({ uploadDir: './tmp'});
-		form.parse(req,(err,fields,files)=>{
-		//var fields = req.body;
-                //var files = req.files;
-                //var form = new formdata();
-                if(fields){
-                        for(let i in fields){
-                                if(fields.hasOwnProperty(i)){
-                                       // form.append(i,fields[i]);
-                                }
-                        }
-                }
-                if(files){
-                        var item = files.file;
-			console.log("form-data");
-			console.dir(files);
-                        //form.append(item['fieldName'],fs.createReadStream(item['path']));
-                }
+		const form = formidable({ multiples: true });
+  		form.parse(req, (err, fields, files) => {
+    		  if (err) {
+      		   next(err);
+      		  return;
+   		 }
+    		  console.dir({ fields, files });
+ 		 });
+		});
 
                 var typeoption = {
-			formData: form
+			//formData: form
                 };
                 const option=Object.assign(typeoption,baseoption);
                 return option;
