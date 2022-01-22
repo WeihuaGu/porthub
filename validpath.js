@@ -9,8 +9,8 @@ var app = express();
 var definePath = (req,res,next)=>{
         flagpathcheck=checkPath(req);
         if(flagpathcheck&&(req.method=="GET")){
-		if(app.get('lastmethod')=="POST"&&req.path=='/')
-			res.redirect(app.get('lastservice'));
+	//	if(app.get('lastmethod')=="POST"&&req.path=='/')
+	//		res.redirect(app.get('lastservice'));
 		if(req.path.includes('/logout'))
 			res.redirect(app.get('lastservice'));
 

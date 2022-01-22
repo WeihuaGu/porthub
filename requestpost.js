@@ -35,7 +35,7 @@ var getparam=(port,req,paramcallback)=>{
 	
 	if(type.includes('application/json')){
 		var typeoption = {
-			body: req.body,
+			body: JSON.stringify(req.body),
 			json: true
 		};
 		const option=Object.assign(typeoption,baseoption);
