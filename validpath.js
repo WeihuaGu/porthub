@@ -9,6 +9,12 @@ var app = express();
 var definePath = (req,res,next)=>{
         flagpathcheck=checkPath(req);
         if(flagpathcheck&&(req.method=="GET")){
+		if(app.get('lastmethod')=="POST"&&req.path=='/')
+			res.redirect(app.get('lastservice'));
+		if(req.path.includes('/logout'))
+			res.redirect(app.get('lastservice'));
+
+
                 next();
 		return;
 	}
@@ -24,6 +30,7 @@ var definePath = (req,res,next)=>{
         next();
 }
 var setlastPath = (req,res,next)=>{
+	app.set('lastmethod',req.method);
         app.set('lastpath',req.path);
         var service=getPathService(req.path);
         if(service!="")
