@@ -69,10 +69,9 @@ var getPathService = (lastpath)=>{
 
 app.use(definePath,setlastPath);
 app.post('*',(req,res,next)=>{
-	console.log("have a post");
         var port=global.serviceport[app.get('lastservice')];
-        console.log(app.get('lastservice'));
-        console.log(port);
+        //console.log(app.get('lastservice'));
+        //console.log(port);
 	var rawres=res;
 	requestpost.makepost(port,req,(requeststream)=>{
 		console.log("call makepost callback");

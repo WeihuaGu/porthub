@@ -8,8 +8,9 @@ var getparam=(port,req,paramcallback)=>{
 			method: "POST",
 			url: "http://localhost:"+port+req.path,
 			headers: {
+
 				"content-type": req.get('content-type'),
-				//cookie: req.cookies
+				"cookie": req.cookies
 			}
 	};
 
@@ -34,13 +35,14 @@ var getparam=(port,req,paramcallback)=>{
 
 	}
 	if(type.includes('multipart/form-data')){
+		var callparamcallback = paramcallback;
 		const form = formidable({ multiples: true });
 		var gentypeoption = (form)=>{
 			var typeoption = {
                         	formData: form
                 	};
                 	const option=Object.assign(typeoption,baseoption);
-			paramcallback(option);
+			callparamcallback(option);
 		}
 		var formcall = (err, fields, files) => {
                   if (err) {
@@ -58,10 +60,10 @@ var getparam=(port,req,paramcallback)=>{
 var makepost=(port,req,callback)=>{
 	var makepostcallback = callback;
 	var paramcallback = (option)=>{
-		//console.log(option);
+		 console.log(option);
 		 var r=request(option,function(err,requestedres,body){
                 	if(err==null){
-				//console.log(body);
+				console.log(body);
 
                 	}
                 	else
