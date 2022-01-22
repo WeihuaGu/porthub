@@ -56,15 +56,18 @@ var getparam=(port,req,paramcallback)=>{
 }
 
 var makepost=(port,req,callback)=>{
+	var makepostcallback = callback;
 	var paramcallback = (option)=>{
+		//console.log(option);
 		 var r=request(option,function(err,requestedres,body){
                 	if(err==null){
+				//console.log(body);
 
                 	}
                 	else
                   		console.log(err);
                  });
-		 callback(r);
+		 makepostcallback(r);
 	}
 
 	getparam(port,req,paramcallback);

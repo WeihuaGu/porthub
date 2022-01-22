@@ -76,8 +76,6 @@ app.post('*',(req,res,next)=>{
 	var rawres=res;
 	requestpost.makepost(port,req,(requeststream)=>{
 		console.log("call makepost callback");
-		console.log(requeststream);
-
 		requeststream.pipe(rawres);
 
 	});
