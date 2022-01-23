@@ -1,6 +1,6 @@
 # porthub
 
-**usage: hub your service whith diffrent port to a one service**
+**usage: hub your service with diffrent port to a one service**
 
 ### install
 
@@ -11,7 +11,7 @@
 
 `npm install`
 
-`node app`
+`node app` (listen port 4000 default,you can change it in app.js)
 
 ### append port with path
 
