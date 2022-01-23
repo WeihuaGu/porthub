@@ -1,5 +1,5 @@
 var request = require('request');
-var formdata = require('form-data');
+var FormData = require('form-data');
 const formidable = require('formidable');
 var fs = require('fs');
 
@@ -15,11 +15,11 @@ var getparam=(port,req,paramcallback)=>{
 				"accept-language": req.get('accept-language'),
 				"accept-encoding": req.get('accept-encoding'), 
 				"referer": req.get('referer'),
-				"origin": req.get('origin'),
+				//"origin": req.get('origin'),
 				"connection": req.get('connection'),
 				"upgrade-insecure-requests": req.get('upgrade-insecure-requests'),
 				"content-type": req.get('content-type'),
-				"cookie": req.cookies
+				"cookie": JSON.stringify(req.cookies)
 			}
 	};
 
@@ -46,12 +46,19 @@ var getparam=(port,req,paramcallback)=>{
 	if(type.includes('multipart/form-data')){
 		var callparamcallback = paramcallback;
 		const form = formidable({ multiples: true });
-		var gentypeoption = (form)=>{
+		var gentypeoption = (fielddata,filedata)=>{  //fk call back 
+			var form = {};
+			for (var key in fielddata){
+				form[key]=fielddata[key];
+			}
+			for(var key in filedata){
+				form[key]=fs.createReadStream(filedata[key]['filepath'],{mimetype:filedata[key]['mimetype']} );
+			}
 			var typeoption = {
                         	formData: form
                 	};
                 	const option=Object.assign(typeoption,baseoption);
-			console.log("gen type option"+option);
+			console.log("gen type option"+"\n"+option);
 			callparamcallback(option);
 		}
 		var formcall = (err, fields, files) => {
@@ -59,7 +66,9 @@ var getparam=(port,req,paramcallback)=>{
                    	console.log(err);
                   	return;
                   }
-		  gentypeoption({ fields, files });
+		  console.log("我是解析form-data的回调");
+		  console.log({fields,files});
+		  gentypeoption(fields, files );
                  };
   		form.parse(req,formcall);
         }

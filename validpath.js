@@ -1,6 +1,4 @@
 var express = require('express');
-var multipart = require('connect-multiparty');
-var multipartmidd = multipart();
 var requestpost = require('./requestpost');
 var util = require('./util');
 
@@ -76,11 +74,12 @@ var getPathService = (lastpath)=>{
 
 app.use(definePath,setlastPath);
 app.post('*',(req,res,next)=>{
+	console.log("hava a post");
         var port=global.serviceport[app.get('lastservice')];
         //console.log(app.get('lastservice'));
         //console.log(port);
 	var rawres=res;
-	requestpost.makepost(port,req,(requeststream)=>{
+	requestpost.makepost(3000,req,(requeststream)=>{
 		console.log("call makepost callback");
 		requeststream.pipe(rawres);
 
