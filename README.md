@@ -21,6 +21,6 @@
 
 example inputh path '/qttorrent' and port 3080
 
-- then website http://localhost:4000/qttorrent will website http://localhost:3080
+- then to visit http://localhost:4000/qttorrent will visit http://localhost:3080
 
 
