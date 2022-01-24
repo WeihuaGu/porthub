@@ -7,6 +7,7 @@ var path = require('path')
 var validpath = require('./validpath');
 var services = require('./services');
 var util = require('./util');
+var config = require('./config');
 
 var app = express();
 app.set('view engine', 'pug');
@@ -16,8 +17,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-global.serviceport = {};
 global.selfserver = ['/','/regist','/registinfo'];
+global.targethost = config['targethost'];
 
 app.all('*',util.cors);
 app.use(validpath);

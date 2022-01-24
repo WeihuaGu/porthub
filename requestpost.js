@@ -2,12 +2,12 @@ var request = require('request');
 var FormData = require('form-data');
 const formidable = require('formidable');
 var fs = require('fs');
-
+var tarhost = global.targethost;
 var getparam=(port,req,paramcallback)=>{
 	var host = req.get('host').split(':')[0];
 	var baseoption = {
 			method: "POST",
-			url: "http://localhost:"+port+req.path,
+			url: "http://"+tarhost+":"+port+req.path,
 			headers: {
 				"host": req.get('host'),
 				"user-agent": req.get('user-agent'),

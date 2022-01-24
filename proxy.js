@@ -1,9 +1,9 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
+var tarhost = global.targethost;
 
 var getProxy=(path,port)=>{
 	var option = {};
-	option['target']='http://localhost:'+port;
+	option['target']='http://'+tarhost+':'+port;
         option['changeOrigin']=false;
 	pathrewrite={};
 	sawpath="^"+path;
