@@ -15,7 +15,7 @@ var getparam=(port,req,paramcallback)=>{
 				"accept-language": req.get('accept-language'),
 				"accept-encoding": req.get('accept-encoding'), 
 				"referer": req.get('referer'),
-				//"origin": req.get('origin'),
+				"origin": req.get('origin'),
 				"connection": req.get('connection'),
 				"upgrade-insecure-requests": req.get('upgrade-insecure-requests'),
 				"content-type": req.get('content-type'),

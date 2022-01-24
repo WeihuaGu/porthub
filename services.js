@@ -11,7 +11,8 @@ router.get('/regist',function (req, res) {
 router.get('/registinfo',function (req, res) {
   var path=req.query.path;
   var port=req.query.port;
-  global.serviceport[path]=port;
+  //global.serviceport[path]=port;
+  req.session.serviceport[path]=port;
   router.use(path,proxy.getProxy(path,port));
   res.send("new path: "+path+" with port: "+port+" added"+"</br>"+'<a href="'+path+'">'+"go to the added server"+"</a>");
 });
