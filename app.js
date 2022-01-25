@@ -24,8 +24,11 @@ app.all('*',util.cors);
 app.use(validpath);
 app.use(services);
 app.get('/', function(req, res){
-	if(req.session.serviceport==undefined)
+	if(req.session.serviceport==undefined){
 		req.session.serviceport={};
+		Object.assign(req.session.serviceport,config['preappend']);
+
+	}
   res.send('<!DOCTYPE html>'+'<html><body>'+'你好： box欢迎你'+'</br>'+JSON.stringify(req.session.serviceport)+'</body></html>');
 });
 

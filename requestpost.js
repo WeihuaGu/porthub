@@ -2,7 +2,8 @@ var request = require('request');
 var FormData = require('form-data');
 const formidable = require('formidable');
 var fs = require('fs');
-var tarhost = global.targethost;
+var config = require('./config');
+var tarhost = config['targethost'];
 var getparam=(port,req,paramcallback)=>{
 	var host = req.get('host').split(':')[0];
 	var baseoption = {

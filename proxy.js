@@ -1,5 +1,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-var tarhost = global.targethost;
+var config = require('./config');
+var tarhost = config['targethost'];
+
 
 var getProxy=(path,port)=>{
 	var option = {};

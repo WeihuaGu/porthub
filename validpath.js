@@ -1,8 +1,9 @@
 var express = require('express');
 var requestpost = require('./requestpost');
 var util = require('./util');
+var config = require('./config');
+var tarhost = config['targethost'];
 
-var rootfilelist = ['.html','.css','.jpg','.js'];
 var app = express();
 var definePath = (req,res,next)=>{
         flagpathcheck=checkPath(req);
@@ -35,9 +36,6 @@ var setlastPath = (req,res,next)=>{
 }
 var checkPath = (req)=>{
 	var baseurl = req.originalUrl;
-	if(req.path!="/"&&isPathHavefile(baseurl)&&(req.path==baseurl)&&(util.countalptimes(baseurl,'/')==1)){
-		return false;
-	}
         for (var item in global.selfserver){
                 if(req.path==global.selfserver[item])
                         return true;
@@ -45,20 +43,17 @@ var checkPath = (req)=>{
 	const servicetype = util.getkeylist(req.session.serviceport);
 
         for (var type in servicetype) { 
-                if(req.path.includes(servicetype[type])){
-                        return true;
+                if(req.path.startsWith(servicetype[type])){
+			if(req.path!="/"&&util.ispathhavefile(req.path)&&(req.path==baseurl)&&(util.countalptimes(baseurl,'/')==1))
+                		return false;
+			else
+                        	return true;
                 }
+		
         }
         return false;
 }
-var isPathHavefile = (url)=>{
-	for (var item in rootfilelist){
-		if(url.includes(rootfilelist[item]))
-			return true;
-	}
-	return false;
-}
-		
+
 var getPathService = (req,lastpath)=>{
         if(lastpath==null)
                 return "";

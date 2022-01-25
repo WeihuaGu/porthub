@@ -26,10 +26,25 @@ var countalptimes = (str ,alp)=>{
 
 
 }
+var ispathhavefile = (path)=>{           //path not include "http://host:port"
+	var file = getfilename(path);
+	if(file == null)
+		return false;
+	else
+		return true;
+
+}
+
+var getfilename = (url)=>{
+	return url.match(/^.+\/(\w+\.\w+)/i)
+}
+
 	
 module.exports = {
 	cors:cors,
 	getkeylist:getkeylist,
-	countalptimes:countalptimes
+	countalptimes:countalptimes,
+	getfilename:getfilename,
+	ispathhavefile:ispathhavefile
 
 }
