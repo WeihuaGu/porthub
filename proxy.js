@@ -11,7 +11,8 @@ var getProxy=(path,port,host=tarhost)=>{
 	else
 		option['target']='http://'+host+':'+port;
 
-        option['changeOrigin']=true;
+        option['changeOrigin']=false;
+	option['secure']=false;
 	pathrewrite={};
 	sawpath="^"+path;
 	pathrewrite[sawpath]="";
