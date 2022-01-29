@@ -1,8 +1,14 @@
 var config = {
-	targethost: "localhost",
+	targethost: "http://localhost",
 	preappend: {
-		"/wallabag": 2000,
-		"/down": 1117
+		"/wallabag": {
+			"host": "http://localhost",
+			"port": 2000
+		},
+		"/down": {
+			"host": "http://localhost",
+			"port": 1117
+		}
 	}
 }
 

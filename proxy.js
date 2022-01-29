@@ -3,10 +3,15 @@ var config = require('./config');
 var tarhost = config['targethost'];
 
 
-var getProxy=(path,port)=>{
+var getProxy=(path,port,host=tarhost)=>{
 	var option = {};
-	option['target']='http://'+tarhost+':'+port;
-        option['changeOrigin']=false;
+	
+	if(host.startsWith('http'))
+		option['target']=host+':'+port;
+	else
+		option['target']='http://'+host+':'+port;
+
+        option['changeOrigin']=true;
 	pathrewrite={};
 	sawpath="^"+path;
 	pathrewrite[sawpath]="";

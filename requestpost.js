@@ -4,7 +4,7 @@ const formidable = require('formidable');
 var fs = require('fs');
 var config = require('./config');
 var tarhost = config['targethost'];
-var getparam=(port,req,paramcallback)=>{
+var getparam=(port,req,paramcallback,host=tarhost)=>{
 	var host = req.get('host').split(':')[0];
 	var baseoption = {
 			method: "POST",
@@ -77,7 +77,7 @@ var getparam=(port,req,paramcallback)=>{
 
 }
 
-var makepost=(port,req,callback)=>{
+var makepost=(port,req,callback,host=tarhost)=>{
 	var makepostcallback = callback;
 	var paramcallback = (option)=>{
 		 console.log(option);
@@ -92,7 +92,7 @@ var makepost=(port,req,callback)=>{
 		 makepostcallback(r);
 	}
 
-	getparam(port,req,paramcallback);
+	getparam(port,req,paramcallback,host);
 }
 
 

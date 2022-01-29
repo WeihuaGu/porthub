@@ -12,19 +12,14 @@ router.get('/regist',function (req, res) {
 router.get('/registinfo',function (req, res) {
   var path=req.query.path;
   var port=req.query.port;
-	if(req.session.serviceport==undefined)
-		req.session.serviceport={};
-  req.session.serviceport[path]=port;
-  router.use(path,addpreservice,proxy.getProxy(path,port));
+  var host=req.query.host;
+  req.session.serviceport[path]={
+	  "host": host,
+	  "port": port
+  };
+  router.use(path,proxy.getProxy(path,port,host));
   res.send("new path: "+path+" with port: "+port+" added"+"</br>"+'<a href="'+path+'">'+"go to the added server"+"</a>");
 });
-var addpreservice = (req,res,next)=>{
-	if(req.session.serviceport==undefined){
-                req.session.serviceport={};
-        }
-        Object.assign(req.session.serviceport,config['preappend']);
-	next();
-}
 
 
 module.exports = router;

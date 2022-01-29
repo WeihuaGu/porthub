@@ -68,13 +68,14 @@ var getPathService = (req,lastpath)=>{
 app.use(definePath,setlastPath);
 app.post('*',(req,res,next)=>{
 	console.log("hava a post");
-        var port=req.session.serviceport[app.get('lastservice')];
+        var port=req.session.serviceport[app.get('lastservice')]['port'];
+	var host=req.session.serviceport[app.get('lastservice')]['host'];
 	var rawres=res;
 	requestpost.makepost(port,req,(requeststream)=>{
 		console.log("call makepost callback");
 		requeststream.pipe(rawres);
 
-	});
+	},host);
 });
 module.exports = app;
 

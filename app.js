@@ -6,6 +6,7 @@ var session = require("express-session");
 var path = require('path')
 var validpath = require('./validpath');
 var services = require('./services');
+var preservices = require('./preservices');
 var util = require('./util');
 var config = require('./config');
 
@@ -18,17 +19,12 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 global.selfserver = ['/','/regist','/registinfo'];
-global.targethost = config['targethost'];
 
 app.all('*',util.cors);
 app.use(validpath);
+app.use(preservices);
 app.use(services);
 app.get('/', function(req, res){
-	if(req.session.serviceport==undefined){
-		req.session.serviceport={};
-		Object.assign(req.session.serviceport,config['preappend']);
-
-	}
   res.send('<!DOCTYPE html>'+'<html><body>'+'你好： box欢迎你'+'</br>'+JSON.stringify(req.session.serviceport)+'</body></html>');
 });
 
