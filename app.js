@@ -12,6 +12,7 @@ var config = require('./config');
 
 var app = express();
 app.set('view engine', 'pug');
+app.set('views', './public/views')
 app.use(session({secret: 'keyboard cat',resave: true,saveUninitialized: true}));
 app.use(favicon(path.join(__dirname,'favicon.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
