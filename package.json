@@ -1,6 +1,6 @@
 {
-  "name": "hi",
-  "description": "hi to box",
+  "name": "porthub",
+  "description": "hub your ports into one service",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -16,6 +16,6 @@
     "serve-favicon": "^2.5.0"
   },
   "scripts": {
-    "start": "node api/app.js"
+    "start": "node app.js"
   }
 }
