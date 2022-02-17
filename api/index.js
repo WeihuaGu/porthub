@@ -28,6 +28,3 @@ app.get('/', function(req, res){
   res.send('<!DOCTYPE html>'+'<html><body>'+'你好： box欢迎你'+'</br>'+JSON.stringify(req.session.serviceport)+'</body></html>');
 });
 
-var server = app.listen(4000, function() {
-    console.log('Listening on port %d', server.address().port);
-});
