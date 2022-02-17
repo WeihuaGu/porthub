@@ -16,6 +16,6 @@
     "serve-favicon": "^2.5.0"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node api/index.js"
   }
 }
